@@ -1,0 +1,11 @@
+ul li + li {
+  border-bottom: 1px solid #666;
+}
+
+ul li ~ li {
+  color: #f00;
+}
+
+ul li > div {
+  background: #ccc;
+}
