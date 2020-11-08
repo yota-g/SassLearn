@@ -113,3 +113,80 @@ save-devは先ほど、作成したpackage.jsonに開発用のパッケージと
 npmでローカルにインストールするとインストールしたファイルはnode_modulesに格納される。
 最後に、sassをビルドするパッケージgulp sassをinstallする。
 npm install --save-dev gulp-sass
+ 
+ 8.初めてのSass
+ gulpでsassをビルドする方法を学習する。
+ ダウンロードファイルでダウンロードしてgulpファイルを作業ディレクトリにいれる。
+ gulpfile.jsはgulpに実行させる内容を記述したもの。
+gulp.task('sass', function(){
+  return gulp.src('./_src/sass/**/*.scss')　ビルドする対象を指定している。 先の指定のディレクトリの.scss拡張子の全てが対象。
+    .pipe(sass({outputStyle: 'expanded'}))　これでsassをビルドして、
+    .pipe(gulp.dest('./css')); ビルドする先はcssと指定している。
+});
+
+次にwatchというタスクを作っている
+これは、このタスクはファイルが作成されて保存されると自動でsassというタスクを実行してsassをビルドする。
+gulp.task('watch', function(){
+  gulp.watch('./_src/sass/**/*.scss', gulp.task('sass'));
+})
+
+最後にwatchというタスクをデフォルト設定して設定している。　
+gulp.task('default',gulp.series('watch'));
+
+簡単なsassを書いてビルドを行っていく。
+書いた後にターミナルを開いてgulpのタスクを実行してsassをビルドする。
+gulpのタスクを実行するのは作業ディレクトリのrootで行う。
+gulp sassでsassというタスクをgulpで実行をするという命令になる。
+そうするとビルドが完成する。
+cssのディレクトリにstyle.cssというファイルがビルドされる。
+ファイルの中を見ると入れ子で書いてあったscssが撤回されて見慣れたcssの書き方になっている。
+
+次に、ファイルの監視と自動ビルドを見ていく。
+gulpと入力すると、defaultでwatchが設定されているのでタスク名を指定せずにgulpと入力すると
+watchタスクが実行される。
+これでgulpがsassの状態を監視して、待機状態になる。
+この状態でsassのファイルを変更して保存するとsassファイルの方で保存されたのを検知して、sassのビルドが実行される。変更した内容が追加されている。
+watchの監視を止めるにはCtrl + c で終了させる事ができる。
+
+最後にcssと出力形式について学習する。
+ ビルド時にオプションとして出力形式を指定する事ができる。
+ 出力形式には４種類ある。
+ nested, 
+ expanded, 
+ compact, 
+ compressed
+ 
+ gulp sassで適用できる。
+
+gulpファイルjsのビルドオプションを変えることで出力形式を変える事ができる。
+nested：出力形式のデフォルトなので何も指定しない場合は、nestedになる。
+       　　オプションを指定しない場合もnestedで表示される。
+ ul {
+  margin: 0 0 20px;}
+  ul li {
+    padding: 5px;
+    text-decoration: none;}
+インデントでネストの状態が表現された状態で表示される。
+
+expande:このオプションで表示させるとどうなるか。
+ul {
+  margin: 0 0 20px;
+}
+ul li {
+  padding: 5px;
+  text-decoration: none;
+}
+一般的なcssのフォーマットで出力されている。
+
+ccmpact:で出力する。
+
+ul {margin: 0 0 20px;}
+
+ul li { padding: 5px; text-decoration: none;}
+のようにセレクタ毎に一行にまとめて表示される。
+
+compressed:で表示させるとどうなるか。
+ul {margin: 0 0 20px;}ul li { padding: 5px;text-decoration: none;}
+インデントや改行がなくなって、全て一行に圧縮状態で出力されファイル容量が一番小さくていいので、リリース時にはこの形式にしてあげるといい。
+
+
