@@ -5,8 +5,9 @@
 
   @at-root {
     .element2 {
-      width: 100px;
+      width: 1000px;
     }
+
     .element3 {
       width: 1100px;
     }
@@ -15,8 +16,10 @@
   @media screen and (max-width: 768px) {
     width: 100%;
 
-    @at-root (without: media rule) .item {
-      margin-bottom: 30px;
+    @at-root {
+      .item {
+        width: 100;
+      }
     }
   }
-}
+} 
