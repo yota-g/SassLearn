@@ -1,0 +1,22 @@
+$calcWidth: 1000px;
+
+.calc1 {
+  width: $calcWidth + 8px * 3 ;
+  content: "文字列の" + "接続"
+}
+
+.calc2 {
+  width: 500px - 8 ;
+}
+
+.calc3 {
+  width: 500px * 8;
+}
+
+.calc4 {
+  width: (500px / 8);
+}
+
+.calc5 {
+  width: 500px % 8;
+}
