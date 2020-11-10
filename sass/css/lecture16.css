@@ -3,7 +3,7 @@
 }
 
 .element2 {
-  width: 100px;
+  width: 1000px;
 }
 
 .element3 {
@@ -14,8 +14,7 @@
   .block {
     width: 100%;
   }
-}
-
-.item {
-  margin-bottom: 30px;
+  .item {
+    width: 100;
+  }
 }
