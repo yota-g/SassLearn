@@ -1,0 +1,39 @@
+.section {
+  margin-bottom: 20px;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.note {
+  color: #f00;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+#contents p {
+  padding: 10px;
+}
+
+#contetnts .section {
+  margin-bottom: 20px;
+}
+
+#localID p {
+  margin-bottom: 0;
+}
+
+.note {
+  color: #f00;
+}
+
+#localID p a:hover {
+  text-decoration: underline;
+}
+
+#contents #localID p {
+  padding: 10px;
+}

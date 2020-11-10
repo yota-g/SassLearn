@@ -1,0 +1,10 @@
+@import 'style_22_lesson';
+@import 'local_22';
+
+#contetnts {
+  @import 'style_22_lesson';
+}
+
+#localID {
+  @import 'local_22';
+}
