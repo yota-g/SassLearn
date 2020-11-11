@@ -1,0 +1,29 @@
+@mixin shadow ($value){
+    text-shadow: $value;
+}
+
+.main {
+  @include shadow(8px 8px 0 #666 , 10px -10px 0 #999)
+}
+
+@mixin shadow1 ($value1...){
+  text-shadow: $value1;
+}
+
+.main {
+@include shadow1(8px 8px 0 #666 , 10px -10px 0 #999)
+}
+
+@mixin box ($w: 300px, $pd: 20px, $mg: 40px, $clr: #f00) {
+  width: $w;
+  padding: $pd;
+  margin: $mg;
+  color: $clr;
+}
+
+$value2: 200px, 40px;  //変数として、カンマ区切りの値をvalueで設定する。
+
+.main {
+  // @include box($value2);
+  @include box ($value2...);
+}
