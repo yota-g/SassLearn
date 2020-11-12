@@ -1,0 +1,23 @@
+@mixin box-mixin {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.box1 {
+  @include box-mixin;
+}
+
+.box2 {
+  @include box-mixin;
+}
+
+.button {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.errorButton {
+  @extend .button;
+  background-color: #f00;
+}
+

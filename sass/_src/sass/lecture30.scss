@@ -1,0 +1,23 @@
+%box {
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.area {
+  @extend %box;
+  background: #ededed;
+}
+
+@media only screen and (max-width: 768px){
+  %box-media {
+    padding: 0;
+  }
+
+  .item {
+    @extend %box-media;
+  }
+}
+
+.item-media {
+  @extend %box-media
+}
