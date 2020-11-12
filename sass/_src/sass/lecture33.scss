@@ -1,0 +1,42 @@
+//number型（数値）
+$number1: 100;
+$number2: 0.8;
+$number3: 15px;
+$number4: 1.2rem;
+$number5: 90%;
+
+//color型(色)
+$color1: red;
+$color2: #f00;
+$color3: rgba(255, 0, 0, 1);
+
+//String型(文字列)
+$string1: "foo";
+$string2: 'bar';
+$string3: fiz;
+$string4: auto;
+$string: sans-serif;
+
+//boolean型(真偽)
+$boolean1: true;
+$boolean2: false;
+
+//List型(配列)
+$list1: 1px 10px 15px;
+$list2: Helvetica, Arial, sans-serif;
+$list3: (dog, cat);
+$list4: [dog cat];
+
+//Map型(連想配列) keyとvalueをコロンで繋げて書く。,で複数のものを宣言できる。
+$color: (
+  text: #333,
+  border: #666, 
+  bg: #ededed
+)
+
+//function型（関数) get-funcitonに引数を渡すと関数型として返り値が戻ってくる。
+get-function("rgb");
+
+//null型(空の値) nullで指定されたプロパティは出力されない。
+$null: null;
+
