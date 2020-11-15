@@ -1,0 +1,23 @@
+.quote {
+  content: quote(テスト);
+}
+
+.unquote {
+  content: unquote("テスト");
+}
+
+.abs { 
+  width: abs(100px - 200px);
+}
+
+.ceil {
+  width: ceil(100px / 3);
+}
+
+.floor {
+  width: floor(100px / 3);
+}
+
+.round {
+  width: round(100px / 3);
+}
