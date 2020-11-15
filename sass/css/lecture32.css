@@ -1,0 +1,18 @@
+.box1 {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.box2 {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.button, .errorButton {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.errorButton {
+  background-color: #f00;
+}

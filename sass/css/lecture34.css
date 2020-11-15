@@ -1,0 +1,16 @@
+.box, .item {
+  background-image: url(../img/bg.png);
+  line-height: 10px;
+}
+
+.mt0 {
+  margin-top: 0px;
+}
+
+.mt5 {
+  margin-top: 5px;
+}
+
+.text {
+  content: "CSS and Sass";
+}

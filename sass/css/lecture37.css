@@ -1,0 +1,47 @@
+.mt1 {
+  margin-top: 10;
+}
+
+.mt2 {
+  margin-top: 20;
+}
+
+.mt3 {
+  margin-top: 30;
+}
+
+.mt210 {
+  margin-top: 100;
+}
+
+.mt220 {
+  margin-top: 200;
+}
+
+.mt230 {
+  margin-top: 300;
+}
+
+.pb0 {
+  padding-bottom: 0;
+}
+
+.pb10 {
+  padding-bottom: 100;
+}
+
+.pb20 {
+  padding-bottom: 200;
+}
+
+.icon-top {
+  background: url("../img/top.png");
+}
+
+.icon-qa {
+  background: url("../img/qa.png");
+}
+
+.icon-contact {
+  background: url("../img/contact.png");
+}

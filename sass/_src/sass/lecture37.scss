@@ -1,0 +1,30 @@
+@for $i from 1 through 3 {
+  .mt#{$i} {
+    margin-top: $i * 10;
+    //margin調整用のクラスが3まで出力される。
+    //throughをtoにすると2までで終値が含まれない。
+  }
+}
+
+@for $h from 1 through 3 {
+  $index: $h * 10;
+  .mt2#{$index} {
+    margin-top: $index * 10;
+  }
+}
+
+$i: 0;
+@while ($i < 30) {
+  .pb#{$i} {
+    padding-bottom: $i * 10;
+  }
+  $i: $i + 10;
+}
+
+$icons: top, qa, contact;
+
+@each $value in $icons {
+  .icon-#{$value}{
+    background: url("../img/" + $value + ".png")
+  }
+}
