@@ -7,4 +7,80 @@ sassの変数にもデータタイプが存在する。
 変数の型を意識しなくてもsassを使用することはできるが、
 ミックスインの作成や条件武器の時に知っておくと役立つ。
 
+34.インターポレーション
+プロパティの値以外での変数の使用方法。セレクターや文字列の一部で使用したい場合。
+変数名をそのまま書くとエラーになる。
+$IMG_PATH: "../img/";
+.box {
+  backfround-image: url($IMG_PATHbg.png);
+  このように使用するとエラーができる
+}
+正しく表示させるにはインターポレーションを使用する。
+#{}で変数を囲んであげる必要がある。
+
+.box {
+  background-image: url(#{$IMG_PATH}bg.png);
+}
+このように記載するとエラーにならず期待通りの表示になる。
+url(../img/bg.png);というcssの表示になる。
+
+セレクター名でインターポレーションを使用する方法。
+$SELECTOR: '.box, .item';
+$SELECTOR {
+  background-image: url(#{$IMG_PATH}bg.png);
+}
+このまま変数を参照するとエラーになる。
+だが、#{}インターポレーションで囲んであげるとエラーにならない。
+$SELECTOR: '.box, .item';
+
+#{$SELECTOR} {
+  background-image: url(#{$IMG_PATH}bg.png);
+}
+とすることで正しく表示される。
+
+.box, .item {
+  back.........
+}と表示される。
+
+インターポレーションはセレクターや文字列以外にも使用方法はある。
+その1つは意図的に演算させたくない場合、
+
+#{$SELECTOR} {
+  $height: 100px;
+  $line-count: 10;
+  background-image: url(#{$IMG_PATH}bg.png);
+  line-height: $height / $line-count;
+}
+このようにローカル変数を設定して、line-heightを演算しているがそれを意図的に演算させたくない場合に、インターポレーションを使用する。
+#{$SELECTOR} {
+  $height: 100px;
+  $line-count: 10;
+  background-image: url(#{$IMG_PATH}bg.png);
+  line-height: #{$height} / #{$line-count};
+}
+このように書くと、100px / 10;と表示されて、演算されずにそのまま表示される。
+
+逆に計算できないところで計算させる方法。
+セレクター内では通常計算できないが、インターポレーションを使用することで計算させる事ができる。
+繰り返し処理で演算を行いたい時がある。
+
+@for $i from 0 to 2 {
+  .mt#{$i * 5}{
+    margin-top: 5px * $i;
+  }
+}
+というような処理をする事ができる。
+margin-top: 5px;と表示される。
+
+$text: "CSS" ;
+
+.text {
+  content: "#{$text} and Sass"; 
+}
+とする事で""が二重にならないように文字列を結合してくれる。
+
+
+
+
+
 
