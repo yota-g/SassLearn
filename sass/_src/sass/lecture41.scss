@@ -1,0 +1,33 @@
+$list1: pen, pineapple;
+$list2: apple, pen;
+
+.length {
+  z-index: length($list1);
+  //配列の個数を表示
+}
+
+.nth {
+  content: nth($list1, 2);
+  //配列のn番目の配列を出力する事ができる配列。2番目が今回なら表示される。
+}
+
+.join {
+  content: join($list1, $list2);
+  //2つの配列を接続して出力できる。pen, pineapple, applle, penと今回なら表示される。
+}
+
+.append {
+  content: append($list1, apple);
+  //$list1にappleが追加されて出力されて表示される。
+}
+
+$map: (
+  bgcolor: #ededed,
+  fontcolor: #ff0000,
+  bdcolor: #000000
+);
+
+.mapget {
+  color: map-get($map, fontcolor)
+  //指定した引数の中から、第二引数で指定したキーの値を出力する事ができる。
+}
