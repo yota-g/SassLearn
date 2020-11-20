@@ -26,4 +26,80 @@ sassでタスクでビルドエラーが出る度に、タスクが終了して�
 browser-sync
  　ローカルサーバーを立ち上げて、ファイルに変化があった場合に自動でブラウザをリロードするというプラグイン。
  これを使用するとファイルを編集して、保存した後に毎回ブラウザをリロードするという手間がいらなくなるので作業効率が向上。
+
+
  gulpタスクを実行する。
+そうするとブラウザシンクが実行されてローカルサーバーが立ち上がる。
+localhostの3000で開く。
+sassファイルを作るとgulp-watch で新規作成されたファイルが監視の中に自動で入る。
+自動的にsassファイルがbuildされcssファイルができる。
+
+sassでエラーを発生させると、gulp-notifyでエラーの表示がされてgulp実行は終了されていないのでそのまま使用することができる。
+それで変更するとcssが正常に表示されるようになる。　
+
+htmlやcssを編集すると自動的にリロードされてブラウザに反映される。
+
+49.Sass Lint
+Sass Lintはあらかじめ決めておいたコーディングルールに
+sassが書かれているのかを確認する静的解析ツール。
+コーディングルールに違反があると警告を出してくれる。
+コーディングを決めることは、複数人での開発時のコーディングルールがまちまちになることを防ぐため。
+そうしないと読みにくくなる。
+sass lintを入れることでコーディングルールを意識しやすくなり、統一感のあるsassを作成できるようになる。
+
+sass lintはgulpのタスクに組み込んで使用することができるようになる。
+var sassLint = require('gulp-sass-lint);と記入し、
+新しいパケージを入れて、sassのビルドタスクにsassLintを入れる。
+gulp.taskに、
+gulp.src(~)
+   .pipe(sassLint({
+     configFile: '.scss-lint.yml'　設定ファイルとして、これを読み込んでいる。ymlの書式でsassのコーディングルールが書かれている。
+    エアビーアンドビーが公開しているコーディングルールをいじって使用していく。今回はそのコーディングルールを見ている。
+   }))
+   .pipe(sassLint.format())
+   .pipe(sassLint.failOnError())
+などを設定する。
+
+設定してgulpタスクを実行するとscssファイルを作成して、正しくない書式で書くと、sass Buildは正しくできるが、
+warnが出て、設定したコーディングに従えという表示が出る。
+
+50.PostCSS
+sassとは全くちがった技術
+組み合わせて使用することもある。
+node.js製のcssの変換ツール。
+様々なプラグインを組み合わせることで、cssファイルやsassファイルに処理を行う。
+自動的にbender prefixを追加したり、プロパティの順番をsortしたりする。
+build前に処理を行う。build後に処理を行う。build前後に処理を行うという3つの処理を行うことができる。
+
+gulpでpostcssを使う方法とよく使うプラグインを見ていく。
+npm install gulp-postcss --save-devをダウンロードし、
+postcssのプラグインであるautoprefixerもダウンロードする。
+npm install autoprefixer --save-dev
+パッケージをダウンロードしたら、gulpfile.jsに
+gulp-postcss、autoprefixreのパッケージを読み込む。
+
+autoprefixerはsassのbuild後に行うので、sassの処理の後にpipeでつなげてあげる。
+.pipe(postcss([autoprefixer]))追加してあげる。
+これでsassのビルド後のcssに自動的にvendor prefixを追加するという処理が行われる。
+autoprefixerはブラウザのバージョンを指定することができる。
+autopewfixwe({browsers: ['last1 versions']})と引数を指定すると最新の1バージョン前までのブラウザまで対応する
+すると対応したものだけがcssに追加されるようになる。
+最新の１バージョン前と指定したり、ブラウザを個別で指定したり、
+ブラウザのシェア率が〜％以上というような設定もできる。 > 2%
+メンテナンスが非常に楽なのでmixinで追加するよりも、
+autoprefixerで指定している方が多い。
+
+2つ目のプラグインは、css-declatration-sorterはcssのプロパティの順をソートして整理してくれる。
+sassのビルド後に処理をしたいのでsassの後に処理を追加する。
+optionで並び順を指定することができる。
+.pipe(postcss([cssdeclsort(order: 'smacss')]))のように設定する。
+smacssが重視するレイアウトに最も重要な順にこれだとソートすることができる。
+アルファベット順にソートするなどの指定ができる。
+適当にプロパティを入れてもcss作成時に並び替えられる。
+
+3つ目のプラグインはmqpackerで
+sassでmediaクエリをネストして書いた場合、出力結果ではmediaクエリがセレクタごとにバラバラに表示されてしまう。
+これを1つにまとめてくれるのがこのプラグイン。
+sassのビルド後に処理をしたいのでsassの後に処理を追加する。
+.pipe(postcss([mqpacker()]))
+すると、mediaクエリが１箇所にまとまって出力される。
