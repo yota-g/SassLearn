@@ -103,3 +103,219 @@ sassでmediaクエリをネストして書いた場合、出力結果ではmedia
 sassのビルド後に処理をしたいのでsassの後に処理を追加する。
 .pipe(postcss([mqpacker()]))
 すると、mediaクエリが１箇所にまとまって出力される。
+入力した後htmlとcssの出力結果をしっかりと見ておくこと。
+親子関係が複雑になっていないか。思った通りに出力されているのかを確認しておくこと。
+
+ページ探知でパーシャルを分割して記入するとどこに何が書いてあるかわかりやすくなる。
+#top {
+   @import  "top";
+}
+とするとすべてidがtopのセレクタのところにしか出力されない。
+
+52.変数と演算、関数 variables
+変数をすべて記入するパーシャルを作成する。　
+複数のパーシャルで使用する可能性のある変数は、変数定義専用のパーシャルを作成して
+そこにまとめて定義するといい。
+小中規模のサイトなら、変数をグローバル変数のみにして、1つのパーシャルにまとめて、1つにした方がいい。
+共通する値を変数に切り出して共通化する。
+変数は使用するパーシャルよりも前にimportしていないといけないので基本的には一行目にインポートする。
+1つのセレクタの中で共通した高さがあればそれを変数にする。
+共通化することでその変数を変更するだけでそのほかの部分を変更する必要がなくなる。
+
+map-get関数を使用した場合、
+変数定義で
+$width: {
+   contents: ~,
+   sideArea: ~
+}とすると、
+使用する場合は、map-get($width, contents)などと使用する。
+このように定義することで横幅を定義した仲間の中のcontentsを使用できるというようにできる。
+
+headerの背景に画像を定義する。
+変数に画像のパスを指定する。　
+ map関数を使用して、指定する。　
+$path: {
+   img: "/img"
+}
+と定義したとすると、
+使用方法は、url(#{map-get($path, img)}header_001.jpg") no-repeat center top;　というように指定する
+背景画像のサイズを追加して指定する。
+background-size: cover;というふうに指定する。
+
+53.ミックスインと継承
+変数と同じようにミックスインも専用のパーシャルを作ると管理しやすい。
+変数と同様に使用するものより前にインポートしないといけないので変数の下にインポートする。
+_mixinsを作成。
+@mixin clearfix {
+   &::after {
+      content: "" ;
+      display: block;
+      clear: both;
+   }
+}
+@include clearfixで使用する。
+
+継承を使用する。
+scssにside_areaの中にネストして、%side_area_box { }のように定義する。
+そして、使用したいセレクタに代入する。
+ @extend %side_area_boxおいうように使用する。
+ 共通のスタイルが表示され、また、異なる部分は別に表示される。　
+
+ header のtileの位置を指定する。
+ そしてsub_titlleはtitleのスタイルを継承して、フォントサイズを変えるだけで大丈夫。
+ titleが見辛い時はtextshadowをつける。
+ 
+ text-shadowのスタイルはパラメーターが多いので毎回設定するのは面倒なのでmixinを作成する。
+
+@mixin textShadow($color:#000, $alpah:0.5) {
+   text-shadow: 1px 1px 2px rgba($color, $alpha);
+}と指定して、titleに使用する。
+titleにincludeして、@include textShadow(#fff, 1);のように使用する。
+継承元にmixinを使用すると、継承しているものにもmixinが適用される。
+
+categoryのリストの右側にくの時のボタンを作るmixinを作成する。
+@mixin linkArrow {
+   position: relative;
+
+   $::after {
+      content: "";
+      display: block;
+      width: 5px;
+      height: 5px;
+      position: absolute;
+      top: 50%;
+      rigih 10px;
+      margin-top: -2.5px;
+      border-top: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+     transform: rotate(45deg);
+   }
+}
+と設定し、categoryのli要素にincludeして表示させる。
+
+54.制御ディレクティブの使用方法をみる。
+util.scssで別のパーシャルにして分けて使用する。
+importは一番最後
+
+ @for $i form 0 to through 10 {
+    .mt#{$1 * 5} {
+       margin-top: 5px * $i;
+    }
+    .mb#{$1 * 5} {
+       margin-bottom: 5px * $i;
+    }
+   .pt#{$1 * 5} {
+       padding-top: 5px * $i;
+    }
+    .pb#{$1 * 5} {
+       padding-bottom: 5px * $i;
+    }
+ }
+ 0から5pxごとに10個のmargin-topやbottom ,padding-top,bottomのセレクタが出力されている。
+を固定で書かれているのを変数に置き換えて使用する。
+$end: 10;
+$step: 5;
+$useMargin: true;
+$usePadding: true;
+
+ @for $i form 0 to through $end {
+   @if  ($useMargin) {
+      .mt#{$1 * $step} {
+         margin-top:" #{$step}p"x * $i;
+      }
+      .mb#{$1 * $step} {
+         margin-bottom: "#{$step}px" * $i;
+      }
+   }
+   @if ($usePadding) {
+     .pt#{$1 * $step} {
+         padding-top: "#{$step}px" * $i;
+      }
+      .pb#{$1 * $step} {
+         padding-bottom: "#{$step}px" * $i;
+      }
+   } 
+ }
+このようにしてもさっきと同じ内容が表示される。
+これで変数を変更したらすべてに代入される。
+
+さらにmarginとpaddingで使うか使わないを選べるものにする
+falseにした方は表示されない。
+
+55.レスポンシブ対応
+mediaクエリをmixin化する方がいい。
+mediaクエリ用のパーシャルを作る。
+_media.scss　ミックスインなので上の方にimportする。 
+map型の変数でブレイクポイントを定義する。
+$breakpoint:{
+   sp: 'only screen and (max-width: 767px)"
+   tb: "only screen and (max-width: 1024px)'
+};
+
+@mixin media ($device {
+   media #{$map-get($breadpoint, $device)}{
+      @content; mediaクエリのミックスインの中に書かれたものを展開する。
+   }
+})
+ブラウザのモバイルのエミュレータを使用すると便利
+1024以下になると横幅に応じて変化するようにmain-contentの中身が変わるようにする。
+
+contensのセレクターでmixinのmediaを使用して、
+@include media ("tb") {
+   width: 100%;
+}
+
+main_area {
+  @include media ("tb") {
+     width: calc(100% - #{map-get($width, sideArea)} - #{map-get($padding, area)* 2});
+  }
+    @include media ("sp") {
+       width: calc(100%  - #{map-get($padding, area)* 2});
+       float: none;
+  }
+}
+
+side_area {
+  width: calc(100% - #{map-get($padding, area) * 2});
+  float: none;
+}
+というように設定していくと横幅に応じて,セレクタが変化するようになる。
+mqpackerを使用するとmediaクエリがまとめて表示されるので使用するといい。
+スマホの場合も同じspのときはfloatを解除する。縦にメインとサイドが並ぶようにする。
+
+floatが解除されて縦に並ぶようになっている。　
+paddingの分がはみ出ていたりするので調整するんが必要。
+調整すると正しく表示される。
+出力されたcssをしっかりと確認しておくことが必要。
+
+ブラウザの開発者ツールだとscssのどの部分に書かれているかではなく、cssでしか見ることができないので、
+sassで開発するのに不便でソースマップを使用する。
+npm install gulp-sourcemaps --save-devでインストールして、gulpファイルのタスクを編集すると、
+var slurcemaps = require('gulp-sourcemaps');を定義して、
+saassのソースを指定している直後に　
+.pipe(sourcemaps.init())を入れ、
+出力する前に、.pipe(gulp.dest('./css'))の前に
+.pipe(sourcemaps.write)を記入するといい。
+
+cssファイルを保存すると出力されたcssの下にソースマップが出力されていて、
+これが、ブラウザに対して、scssがどのようにつながっているのかを伝えている。
+この状態でブラウザの開発者ツールを見ると、cssの行数が表示されていたところが、scssでの対象の行数が表示されるようになる。
+そこをクリックするとscssのファイルが表示され、該当のソースがscssのどこに書かれているかがわかる。　
+別ファイルでソースマップが出力されるようにするには、 writeの中に引数で書き込み先を指定する。
+'./'と指定すると、style.css.mapというファイルが作成され、そこに入力され出力される。
+cssを見ると一番最後にソースマップのurlが記入されている。
+最後にリリースについては、
+cssを見やすくするようにexpandedでソースマップを指定していたが、リソースはソースマップはなしで、cssも細かくしないといけない。
+
+リリース用のものを作らないといけない。
+
+sass-releasen部分を作り、sassのビルドと、ポストcssの処理のみのタスクを作成する。
+これでgulpのタスクのreleaseにsass-releaseを指定する。
+
+gulp releaseと入力すると、出力されたcssは圧縮されたcssになり、ソースマップへのリンクが消えている。　
+
+
+
+
+
+
